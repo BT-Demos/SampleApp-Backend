@@ -31,3 +31,4 @@ jobs:
           version: "${{ inputs.artifactVersion }}"
           url: "docker.io/SampleApp/${{ inputs.artifactName }}:${{ inputs.artifactVersion }}"
           target-environment: "${{ inputs.environment }}"
+          
