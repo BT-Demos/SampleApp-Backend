@@ -7,35 +7,7 @@ on:
     workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Compile Code
-        run: echo "Compiling..."
-
-      - name: Produce Binary
-        run: sleep 5
-
-      - name: Push binary
-        run: echo "Pushing Binary to ECR..."
-
-      - name: Register Build Artifacts in Cloudbees Platform
-        uses: cloudbees-io-gha/register-build-artifact@main
-        id: go-action
-        with:
-          name: "SampleApp-Backend"
-          version: 2.0.0
-          url: docker.io/SampleApp/SampleApp-Backend:2.0.0
-          type: "docker"
-          cloudbees-pat: ${{ secrets.CBP_PAT_PROD }}
-            
-      - name: Publish evidence
-        uses: cloudbees-io-gha/publish-evidence-item@main
-        with:
-          cloudbees-pat: ${{ secrets.CBP_PAT_PROD }}
-          content: |-
-            Build Completed and artifacts published to Cloudbees platform
-
+  
   test:
     runs-on: ubuntu-latest
     needs: [build]   # Depends on 'build' job
@@ -50,7 +22,7 @@ jobs:
         uses: cloudbees-io-gha/publish-test-results@main
         with:
           test-type: GO
-          folder-path: test_reports/*
+          results-path: test_reports/*
           cloudbees-pat: ${{ secrets.CBP_PAT_PROD }}
           
       - name: Publish evidence
